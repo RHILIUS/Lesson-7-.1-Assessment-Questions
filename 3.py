@@ -1,45 +1,49 @@
 import tkinter as tk
+from tkinter import font
 from tkinter import messagebox
 
-def calculate_total():
+# ===== DEF =====
+# Calculate the bagel
+def calculateTotal():
     try:
-        # Get the selected bagel price
+        
+        # BAGEL
         bagel_price = 0
-        if bagel_var.get() == "White":
+        if bagel_choice.get() == "White":
             bagel_price = 1.25
-        elif bagel_var.get() == "Whole Wheat":
+        elif bagel_choice.get() == "Whole Wheat":
             bagel_price = 1.50
 
-        # Get the selected toppings prices
+        # TOPPINGS
         toppings_price = 0
-        if cream_cheese_var.get():
+        if var.get():
             toppings_price += 0.50
-        if butter_var.get():
+        if var1.get():
             toppings_price += 0.25
-        if blueberry_jam_var.get():
+        if var2.get():
             toppings_price += 0.75
-        if raspberry_jam_var.get():
+        if var3.get():
             toppings_price += 0.75
-        if peach_jelly_var.get():
+        if var4.get():
             toppings_price += 0.75
 
-        # Get the selected coffee price
+        # COFFEE
         coffee_price = 0
-        if coffee_var.get() == "Regular Coffee":
+        if coffee_choice.get() == "Regular Coffee":
             coffee_price = 1.25
-        elif coffee_var.get() == "Cappuccino":
+        elif coffee_choice.get() == "Cappuccino":
             coffee_price = 2.00
-        elif coffee_var.get() == "Cafe au lait":
+        elif coffee_choice.get() == "Cafe au lait":
             coffee_price = 1.75
 
-        # Calculate subtotal, tax, and total
+        # TOTAL
         subtotal = bagel_price + toppings_price + coffee_price
         tax = subtotal * 0.07
         total = subtotal + tax
 
-        # Display the prices
-        subtotal_entry.delete(0, tk.END)
-        subtotal_entry.insert(0, f"${subtotal:.2f}")
+        # DISPLAY
+        subTotal_entry.delete(0, tk.END)
+        subTotal_entry.insert(0, f"${subtotal:.2f}")
         tax_entry.delete(0, tk.END)
         tax_entry.insert(0, f"${tax:.2f}")
         total_entry.delete(0, tk.END)
@@ -48,79 +52,239 @@ def calculate_total():
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred: {e}")
 
-def reset_form():
-    # Reset all the selections
-    bagel_var.set("")
-    cream_cheese_var.set(0)
-    butter_var.set(0)
-    blueberry_jam_var.set(0)
-    raspberry_jam_var.set(0)
-    peach_jelly_var.set(0)
-    coffee_var.set("None")
-    subtotal_entry.delete(0, tk.END)
+def formReset():
+    bagel_choice.set("")
+    var.set(0)
+    var1.set(0)
+    var2.set(0)
+    var3.set(0)
+    var4.set(0)
+    coffee_choice.set("None")
+    subTotal_entry.delete(0, tk.END)
     tax_entry.delete(0, tk.END)
     total_entry.delete(0, tk.END)
 
-def exit_app():
+def exit():
     root.destroy()
 
-# Create the main window
+# WINDOWS
 root = tk.Tk()
-root.title("Brandi's Bagel House")
+root.title("Bagel and Coffee Price Calculator")
 
-# Create the heading
-heading_label = tk.Label(root, text="Brandi's Bagel House", font=("Arial", 24))
-heading_label.grid(row=0, column=0, columnspan=4, pady=10)
+# TITLE
+style = font.Font(family="Times New Roman", size=20, slant="italic", weight="bold")
+label = tk.Label(
+    root,
+    text="Brandi's Bagel House",
+    font=style
+)
+label.pack(pady=20)
 
-# Bagel options
-bagel_frame = tk.LabelFrame(root, text="Pick a Bagel", padx=10, pady=10)
-bagel_frame.grid(row=1, column=0, padx=10, pady=10, sticky="w")
-bagel_var = tk.StringVar()
-tk.Radiobutton(bagel_frame, text="White ($1.25)", variable=bagel_var, value="White").pack(anchor='w')
-tk.Radiobutton(bagel_frame, text="Whole Wheat ($1.50)", variable=bagel_var, value="Whole Wheat").pack(anchor='w')
+# ===== MAIN CONTAINER FRAME =======
+mainframe = tk.Frame(root)
+mainframe.pack()  # pady = 10
 
-# Toppings options
-toppings_frame = tk.LabelFrame(root, text="Pick Your Toppings", padx=10, pady=10)
-toppings_frame.grid(row=2, column=0, padx=10, pady=10, sticky="w")
-cream_cheese_var = tk.IntVar()
-butter_var = tk.IntVar()
-blueberry_jam_var = tk.IntVar()
-raspberry_jam_var = tk.IntVar()
-peach_jelly_var = tk.IntVar()
-tk.Checkbutton(toppings_frame, text="Cream Cheese ($.50)", variable=cream_cheese_var).pack(anchor='w')
-tk.Checkbutton(toppings_frame, text="Butter ($.25)", variable=butter_var).pack(anchor='w')
-tk.Checkbutton(toppings_frame, text="Blueberry Jam ($.75)", variable=blueberry_jam_var).pack(anchor='w')
-tk.Checkbutton(toppings_frame, text="Raspberry Jam ($.75)", variable=raspberry_jam_var).pack(anchor='w')
-tk.Checkbutton(toppings_frame, text="Peach Jelly ($.75)", variable=peach_jelly_var).pack(anchor='w')
+# ===== LEFT FRAME =======
+leftframe = tk.Frame(mainframe)
+leftframe.grid(row=0, column=0, padx=20, sticky='n')
 
-# Coffee options
-coffee_frame = tk.LabelFrame(root, text="Want Coffee with That?", padx=10, pady=10)
-coffee_frame.grid(row=1, column=1, padx=10, pady=10, sticky="w")
-coffee_var = tk.StringVar(value="None")
-tk.Radiobutton(coffee_frame, text="None", variable=coffee_var, value="None").pack(anchor='w')
-tk.Radiobutton(coffee_frame, text="Regular Coffee ($1.25)", variable=coffee_var, value="Regular Coffee").pack(anchor='w')
-tk.Radiobutton(coffee_frame, text="Cappuccino ($2.00)", variable=coffee_var, value="Cappuccino").pack(anchor='w')
-tk.Radiobutton(coffee_frame, text="Cafe au lait ($1.75)", variable=coffee_var, value="Cafe au lait").pack(anchor='w')
+# child of leftframe
+leftframe1 = tk.LabelFrame(leftframe)
+leftframe1.grid(row=0, column=0, pady=5)
 
-# Price display
-price_frame = tk.LabelFrame(root, text="Price", padx=10, pady=10)
-price_frame.grid(row=2, column=1, padx=10, pady=10, sticky="w")
-tk.Label(price_frame, text="Subtotal:").grid(row=0, column=0, sticky="w")
-subtotal_entry = tk.Entry(price_frame, width=10)
-subtotal_entry.grid(row=0, column=1)
-tk.Label(price_frame, text="Tax:").grid(row=1, column=0, sticky="w")
-tax_entry = tk.Entry(price_frame, width=10)
-tax_entry.grid(row=1, column=1)
-tk.Label(price_frame, text="Total:").grid(row=2, column=0, sticky="w")
-total_entry = tk.Entry(price_frame, width=10)
-total_entry.grid(row=2, column=1)
+# widgets of leftframe1
+label_left = tk.Label(
+    leftframe1,
+    text="Pick a Bagel"
+)
+label_left.grid(sticky='w', pady=(0, 10))
 
-# Buttons
-button_frame = tk.Frame(root)
+# Choices
+bagel_choice = tk.StringVar(value="White")
+
+radio = tk.Radiobutton(
+    leftframe1,
+    text="White ($1.25)",
+    value="White",
+    variable=bagel_choice
+)
+radio.grid(sticky='w')
+
+radio1 = tk.Radiobutton(
+    leftframe1,
+    text="Whole Wheat ($1.50)",
+    value="Whole Wheat",
+    variable=bagel_choice
+)
+radio1.grid(sticky='w', padx=(0, 30))
+
+# child of leftframe
+leftframe2 = tk.LabelFrame(leftframe)
+leftframe2.grid(row=1, column=0, pady=25)  # i add 25 padding here
+
+# widgets of leftframe2
+label1_left = tk.Label(
+    leftframe2,
+    text="Pick Your Toppings"
+)
+label1_left.grid(sticky='w', pady=(0, 10))
+
+# Choices
+var = tk.IntVar()
+
+toppings = tk.Checkbutton(
+    leftframe2,
+    text="Cream Cheese ($.50)",
+    variable=var
+)
+toppings.grid(sticky='w', padx=(0, 30))
+
+var1 = tk.IntVar()
+toppings_1 = tk.Checkbutton(
+    leftframe2,
+    text="Butter ($.25)",
+    variable=var1
+)
+toppings_1.grid(sticky='w')
+
+var2 = tk.IntVar()
+toppings_2 = tk.Checkbutton(
+    leftframe2,
+    text="Blueberry Jam ($.75)",
+    variable=var2
+)
+toppings_2.grid(sticky='w')
+
+var3 = tk.IntVar()
+toppings_3 = tk.Checkbutton(
+    leftframe2,
+    text="Raspberry Jam ($.75)",
+    variable=var3
+)
+toppings_3.grid(sticky='w')
+
+var4 = tk.IntVar()
+toppings_4 = tk.Checkbutton(
+    leftframe2,
+    text="Peach Jelly ($.75)",
+    variable=var4
+)
+toppings_4.grid(sticky='w')
+
+# ===== RIGHT FRAME =======
+
+rightframe = tk.Frame(mainframe)
+rightframe.grid(row=0, column=1, padx=20, sticky='n')
+
+# child of rightframe
+rightframe1 = tk.LabelFrame(rightframe)
+rightframe1.grid(row=0, column=0, pady=5, sticky='w')
+
+# widgets of rightframe1
+label_right = tk.Label(
+    rightframe1,
+    text="Want Coffee with That?"
+)
+label_right.grid(sticky='w', pady=(0, 10))
+
+# Choices
+coffee_choice = tk.StringVar(value="None")
+
+coffee = tk.Radiobutton(
+    rightframe1,
+    text="None",
+    value="None",
+    variable=coffee_choice
+)
+coffee.grid(sticky='w')
+
+coffee_1 = tk.Radiobutton(
+    rightframe1,
+    text="Regular Coffee ($1.25)",
+    value="Regular Coffee",
+    variable=coffee_choice
+)
+coffee_1.grid(sticky='w', padx=(0, 30))
+
+coffee_2 = tk.Radiobutton(
+    rightframe1,
+    text="Cappuccino ($2.00)",
+    value="Cappuccino",
+    variable=coffee_choice
+)
+coffee_2.grid(sticky='w')
+
+coffee_3 = tk.Radiobutton(
+    rightframe1,
+    text="Cafe au lait ($1.75)",
+    value="Cafe au lait",
+    variable=coffee_choice
+)
+coffee_3.grid(sticky='w')
+
+# child of rightframe
+rightframe2 = tk.LabelFrame(rightframe)
+rightframe2.grid(row=1, column=0, pady=20, sticky='w')
+
+
+# widgets of rightframe2
+label_right1 = tk.Label(
+    rightframe2,
+    text="Price"
+)
+label_right1.grid(sticky='w', padx=(0, 50))
+
+# grandchild of rightframe
+rf2 = tk.Frame(rightframe2)
+rf2.grid(row=1, column=0, pady=5, sticky='w')
+
+subTotal = tk.Label(
+    rf2,
+    text="Subtotal"
+)
+subTotal.grid(row=0, column=0, sticky='e')
+
+subTotal_entry = tk.Entry(
+    rf2
+)
+subTotal_entry.grid(row=0, column=1, padx=5, pady=3)
+
+tax = tk.Label(
+    rf2,
+    text="Tax"
+)
+tax.grid(row=1, column=0, sticky='e')
+
+tax_entry = tk.Entry(
+    rf2
+)
+tax_entry.grid(row=1, column=1, padx=5,  pady=3)
+
+total = tk.Label(
+    rf2,
+    text="Total"
+)
+total.grid(row=2, column=0, sticky='e')
+
+total_entry = tk.Entry(
+    rf2
+)
+total_entry.grid(row=2, column=1, padx= 5,  pady=3)
+
+
+# ===== BOTTOM FRAME =======
+
+button_frame = tk.Frame(mainframe)
 button_frame.grid(row=3, column=0, columnspan=2, pady=10)
-tk.Button(button_frame, text="Calculate Total", command=calculate_total).grid(row=0, column=0, padx=5)
-tk.Button(button_frame, text="Reset Form", command=reset_form).grid(row=0, column=1, padx=5)
-tk.Button(button_frame, text="Exit", command=exit_app).grid(row=0, column=2, padx=5)
+tk.Button(
+  button_frame, text="Calculate Total", command=calculateTotal).grid(row=0, column=0, padx=10)
 
-# Run the Tkinter event loop
+tk.Button(
+  button_frame, text="Reset Form", command=formReset).grid(row=0, column=1, padx=10)
+
+tk.Button(
+  button_frame, text="Exit", command=exit).grid(row=0, column=2, padx=10)
+
+
+# MAIN LOOP
 root.mainloop()
